@@ -1,0 +1,19 @@
+@import "./Scss/var";
+@import "./Scss/h";
+@import "./Scss/zeroing.scss";
+@import "./Scss/error.scss";
+@import "./UI/preloader.scss";
+@import "./components/Search/search.scss";
+@import "./components/Books/books.scss";
+@import "./components/Book/book.scss";
+
+body{
+  background-color: $mainBGColor;
+}
+
+.container{
+  max-width: 1170px;
+  width: 100%;
+  padding: 0 $indent;
+  margin: 0 auto;
+}

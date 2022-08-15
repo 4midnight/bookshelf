@@ -1,23 +1,60 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { Route, Routes } from 'react-router-dom';
+import './App.scss';
+import Search from './components/Search/Search';
+import { UseTypedSelector } from './hooks/UseTypedSelector';
+import Book from './pages/Book';
+import Books from './pages/Books';
+import { booksAddAC, booksErrAC, booksPagAC, booksSuccessAC } from './store/reducer/booksReducer';
+import SVG from './SVG/SVG';
 
-function App() {
+const App: React.FC = () => {
+
+  const search = UseTypedSelector(state => state.search.searchSelect);
+  const dispath = useDispatch();
+
+  useEffect(() => {
+    const s = search.length === 0 ? "" : search[0].search; //s = search
+    const index = search.length === 0 ? 0 : search[0].index;
+
+    if (s && !index) {
+      const cat = search[0].category === "" ? "" : search[0].category;
+      const sort = search[0].sorting === "" ? "relevance" : search[0].sorting;
+
+      const fethData = async () => {
+        dispath(booksSuccessAC(true));
+        await fetch(`https://www.googleapis.com/books/v1/volumes?q=${s}+subject:${cat}&orderBy=${sort}&startIndex=${0}&maxResults=30&key=AIzaSyAhbLYbTi0Z6kzNrdCcwZYN302f1k4DIzM`)
+          .then(res => res.json())
+          .then(res => dispath(booksAddAC(res.items)))
+          .catch(err => dispath(booksErrAC(err)));
+      }
+      fethData()
+    } else if(index) {
+      const cat = search[0].category === "" ? "" : search[0].category;
+      const sort = search[0].sorting === "" ? "relevance" : search[0].sorting;
+      (async function(){
+        dispath(booksSuccessAC(true));
+        await fetch(`https://www.googleapis.com/books/v1/volumes?q=${s}+subject:${cat}&orderBy=${sort}&startIndex=${index}&maxResults=30&key=AIzaSyAhbLYbTi0Z6kzNrdCcwZYN302f1k4DIzM`)
+          .then(res => res.json())
+          .then(res => dispath(booksPagAC(res.items)))
+          .catch(err => dispath(booksErrAC(err)));
+      })();
+    }
+
+  }, [search])
+
   return (
     <div className="App">
+      <SVG />
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <Search />
+        <div className="container">
+          <Routes>
+            <Route path='/' element={<Books />} />
+            <Route path='/book' element={<Book />} />
+          </Routes>
+        </div>
       </header>
     </div>
   );
