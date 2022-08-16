@@ -6,6 +6,10 @@
   background-repeat: no-repeat;
   object-fit: contain;
 
+  @media screen and (max-width: $media768) {
+    height: auto;
+  }
+
   &-inner {
     padding: $indent * 3 0;
     display: flex;
@@ -39,11 +43,14 @@
           color: $secondColor;
           background-color: $mainColor;
 
-
           transition: all 0.3s cubic-bezier(0, 0, 0.43, 1.49);
           transition-property: width, border-radius;
           z-index: 1;
           position: relative;
+
+          @media screen and (max-width: $media768) {
+            padding: $indent * 0.5 $indent * 0.7;
+          }
 
           &::placeholder {
             font-family: inherit;
@@ -59,6 +66,10 @@
             + .btn {
               display: block;
             }
+
+            @media screen and (max-width: $media768) {
+              width: calc(100% - 4rem);
+            }
           }
         }
         .btn {
@@ -72,6 +83,11 @@
           border-radius: 0 2px 2px 0;
           background-color: $secondColor;
           color: #fff;
+
+          @media screen and (max-width: $media768) {
+            width: 4rem;
+            padding: $indent * 0.66;
+          }
         }
       }
 
@@ -81,8 +97,20 @@
         justify-content: space-between;
         margin-bottom: $indent;
 
+        @media screen and (max-width: $media768) {
+          width: 100%;
+        }
+
+        @media screen and (max-width: $media991) {
+          flex-wrap: wrap;
+          
+        }
+
         &-header {
           color: $mainColor;
+          @media screen and (max-width: $media991) {
+           margin-bottom: $indent;
+          }
         }
 
         &__select {
@@ -91,6 +119,10 @@
 
           border-top: none;
           border-left: none;
+
+          @media screen and (max-width: $media768) {
+            padding: $indent * 0.5 $indent * 0.7;
+          }
 
           &:focus {
             outline: none;

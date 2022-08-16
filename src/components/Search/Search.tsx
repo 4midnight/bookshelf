@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { UseTypedSelector } from '../../hooks/UseTypedSelector'
 import { searchAddAC, searchErrAC, searchSuccessAC } from '../../store/reducer/searchReducer'
 import SearchChange from './SearchChange'
 import SearchSelect from './SearchSelect'
 
 const Search: React.FC = () => {
 
+    const searchErr = UseTypedSelector(state => state.search.err);
     const dispath = useDispatch();
 
     const [category, setGategory] = useState("");
@@ -53,6 +55,7 @@ const Search: React.FC = () => {
             <div className="container">
                 <div className="search-inner">
                     <h1 className="h1 search-header"> Books items search</h1>
+                    {searchErr ? <p className='error'>{searchErr}</p> : undefined}
                     <form action="" className='search-form' onSubmit={searchHandler}>
                         <SearchSelect search={searchInputHandler} value={search} />
                         <SearchChange sorting={sortingChangeHandler}

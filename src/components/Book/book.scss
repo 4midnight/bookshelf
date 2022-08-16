@@ -10,19 +10,47 @@
     display: flex;
     gap: $indent * 2;
 
+    @media screen and (max-width: $media768) {
+      width: 100%;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
     &-img {
       width: 300px;
       height: 350px;
       background-color: $secondColor;
+
       .img {
         display: block;
         width: 300px;
         height: 350px;
+
+        @media screen and (max-width: $media991) {
+          width: 250px;
+          height: 300px;
+        }
+        @media screen and (max-width: $media768) {
+          width: 100%;
+          height: auto;
+        }
+      }
+
+      @media screen and (max-width: $media991) {
+        width: 250px;
+        height: 300px;
+      }
+      @media screen and (max-width: $media768) {
+        height: auto;
       }
     }
 
     &-info {
       width: 70%;
+
+      @media screen and (max-width: $media768) {
+        width: 100%;
+      }
       .book-item {
         &-header {
           padding-bottom: $indent;
@@ -38,9 +66,9 @@
           -ms-text-overflow: ellipsis;
           text-overflow: ellipsis;
           overflow: hidden;
-          -ms-line-clamp: 2;
-          -webkit-line-clamp: 2;
-          line-clamp: 2;
+          -ms-line-clamp: 6;
+          -webkit-line-clamp: 6;
+          line-clamp: 6;
           display: -webkit-box;
           display: box;
           word-wrap: break-word;
@@ -48,6 +76,13 @@
           box-orient: vertical;
 
           margin-bottom: $indent;
+
+          @media screen and (max-width: $media991) {
+            height: 45%;
+          }
+          @media screen and (max-width: $media768) {
+            height: 35%;
+          }
         }
 
         &-publisher {
@@ -64,8 +99,12 @@
 
     &-btn {
       display: flex;
-      
-      .btn-back{
+
+      @media screen and (max-width: $media768) {
+        margin-bottom: $indent * 2;
+      }
+
+      .btn-back {
         padding: $indent $indent * 2;
         cursor: pointer;
 

@@ -12,6 +12,7 @@ import SVG from './SVG/SVG';
 const App: React.FC = () => {
 
   const search = UseTypedSelector(state => state.search.searchSelect);
+  const booksErr = UseTypedSelector(state => state.books.err);
   const dispath = useDispatch();
 
   useEffect(() => {
@@ -26,14 +27,14 @@ const App: React.FC = () => {
         dispath(booksSuccessAC(true));
         await fetch(`https://www.googleapis.com/books/v1/volumes?q=${s}+subject:${cat}&orderBy=${sort}&startIndex=${0}&maxResults=30&key=AIzaSyAhbLYbTi0Z6kzNrdCcwZYN302f1k4DIzM`)
           .then(res => res.json())
-          .then(res => dispath(booksAddAC(res.items)))
+          .then((res: any) => res.items !== undefined ? dispath(booksAddAC(res.items)) : dispath(booksErrAC("Error")))
           .catch(err => dispath(booksErrAC(err)));
       }
       fethData()
-    } else if(index) {
+    } else if (index) {
       const cat = search[0].category === "" ? "" : search[0].category;
       const sort = search[0].sorting === "" ? "relevance" : search[0].sorting;
-      (async function(){
+      (async function () {
         dispath(booksSuccessAC(true));
         await fetch(`https://www.googleapis.com/books/v1/volumes?q=${s}+subject:${cat}&orderBy=${sort}&startIndex=${index}&maxResults=30&key=AIzaSyAhbLYbTi0Z6kzNrdCcwZYN302f1k4DIzM`)
           .then(res => res.json())
@@ -50,6 +51,9 @@ const App: React.FC = () => {
       <header className="App-header">
         <Search />
         <div className="container">
+          <div className="center">
+            {booksErr ? <p className='error'>{booksErr}</p> : undefined}
+          </div>
           <Routes>
             <Route path='/' element={<Books />} />
             <Route path='/book' element={<Book />} />
